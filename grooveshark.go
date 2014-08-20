@@ -1,34 +1,32 @@
 package grooveshark
 
 import (
-	"crypto/rand"
-	"encoding/hex"
 	"fmt"
+	netUrl "net/url"
 )
 
 type Client struct {
 	session *Session
-	request *Request
 }
 
 func NewClient() (client *Client) {
-	client = &Client{}
-	client.session = NewSession()
-	client.request = NewRequest(client.session)
-	fmt.Println(client)
-	return client
+	return &Client{
+		session: NewSession(HtmlSharkSession),
+	}
 }
 
 func (c *Client) Connect() {
-	c.session.Connect()
-	c.session.Check()
+	c.session.Initiate()
 	fmt.Println("We are online")
 }
 
-func (c *Client) signMethod(method string) string {
-	token := c.session.GetToken()
-	nonce := make([]byte, 3)
-	rand.Read(nonce)
-	fmt.Println(token, hex.EncodeToString(nonce))
-	return ""
+func (c *Client) CallMethod(method string, parameters *Parameters) {
+	request := NewRequest(c.session, method, parameters)
+	request.Sign()
+	request.Send()
+}
+
+func (c *Client) DownloadTrack(ip, streamKey string) {
+	url := "/stream.php?streamKey=" + netUrl.QueryEscape(streamKey)
+	fmt.Println(url)
 }
