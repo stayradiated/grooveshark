@@ -26,3 +26,7 @@ type GetStreamKeyFromSongIDEx struct {
 	ReturnTS bool             `json:"returnTS"`
 	Country  *session.Country `json:"country"`
 }
+
+type GetPlaylistByID struct {
+	PlaylistId string `json:"playlistID"`
+}

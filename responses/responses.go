@@ -16,6 +16,11 @@ type GetResultsFromSearch struct {
 	} `json:"result"`
 }
 
+type GetPlaylistByID struct {
+	Header Header   `json:"header"`
+	Result Playlist `json:"result"`
+}
+
 type returnedResult struct {
 	Return bool `json:"Return"`
 }
@@ -66,4 +71,44 @@ type StreamKey struct {
 	StreamServerId int    `json:"streamServerID"`
 	Timestamp      int    `json:"ts"`
 	USecs          string `json:"uSecs"`
+}
+
+type Playlist struct {
+	// About: ""
+	// AlbumFiles: [1085811.jpg, 2688559.jpg, 5978723.jpg, 977767.jpg]
+	// FName: "Jocelyn Ziegler"
+	// LName: ""
+	// LastModifiedBy: 4893556
+	// Name: "Summer 2014"
+	// Picture: "977767-1085811-2688559-5978723.jpg"
+	// PlaylistID: 100071579
+	// SongCount: 16
+	// Songs: [{SongID:41177002, Name:Marilyn Monroe, SongNameID:329517, AlbumID:9707883, AlbumName:Girl,…},…]
+	// TSAdded: "2014-08-11 21:22:28"
+	// TSModified: 1407874857
+	// UUID: "53e96c54056d678f5f000000"
+	// UserID: 4893556
+	// UserName: "Jocelyn Ziegler"
+	// UserPicture: "4893556-20140525202840.jpg"
+	// Username: "Jocelyn Ziegler"
+	// tooBig: false
+}
+
+type PlaylistTrack struct {
+	// AlbumID: "9707883"
+	// AlbumName: "Girl"
+	// ArtistID: "22594"
+	// ArtistName: "Pharrell Williams"
+	// AvgRating: "0"
+	// CoverArtFilename: null
+	// EstimateDuration: "350"
+	// Flags: "0"
+	// IsLowBitrateAvailable: "1"
+	// IsVerified: "1"
+	// Name: "Marilyn Monroe"
+	// Popularity: "1423300847"
+	// SongID: "41177002"
+	// SongNameID: "329517"
+	// TrackNum: "1"
+	// Year: "2014"
 }
