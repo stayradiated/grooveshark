@@ -16,8 +16,8 @@ func (c *Client) Connect() {
 	c.session.Initiate()
 }
 
-func (c *Client) CallMethod(method string, parameters interface{}, resp interface{}) {
+func (c *Client) CallMethod(method string, parameters interface{}, resp interface{}) error {
 	request := session.NewRequest(c.session, method, parameters)
 	request.Sign()
-	request.Send(resp)
+	return request.Send(resp)
 }

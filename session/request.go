@@ -6,6 +6,7 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -93,26 +94,30 @@ func (r *Request) Sign() {
 }
 
 // Send makes the request
-func (r *Request) Send(resp interface{}) {
+func (r *Request) Send(resp interface{}) error {
 	data, err := json.Marshal(*r.Body)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	body := bytes.NewReader(data)
 
 	res, err := http.Post(r.Url, "application/json", body)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	resBody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = json.Unmarshal(resBody, &resp)
 	if err != nil {
-		panic(err)
+		fmt.Printf("%+v\n", res)
+		fmt.Println(string(resBody))
+		return err
 	}
+
+	return nil
 }

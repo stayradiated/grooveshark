@@ -15,9 +15,12 @@ type StreamKey struct {
 	StreamKey string
 }
 
-func (c *Client) GetStreamKey(songId int) *StreamKey {
-	sk := c.getStreamKeyFromSongIDEx(songId)
-	return newStreamKey(sk.Ip, sk.StreamKey, songId, c)
+func (c *Client) GetStreamKey(songId int) (*StreamKey, error) {
+	sk, err := c.getStreamKeyFromSongIDEx(songId)
+	if err != nil {
+		return nil, err
+	}
+	return newStreamKey(sk.Ip, sk.StreamKey, songId, c), nil
 }
 
 func newStreamKey(ip, key string, songId int, client *Client) (streamKey *StreamKey) {
@@ -36,14 +39,14 @@ func (sk *StreamKey) Url() string {
 
 func (sk *StreamKey) Download() (*http.Response, error) {
 	// must call markSongDownloadedEx before downloading song
-	sk.client.markSongDownloadedEx(sk)
+	go sk.client.markSongDownloadedEx(sk)
 	return http.Get(sk.Url())
 }
 
-func (c *Client) getStreamKeyFromSongIDEx(songId int) responses.StreamKey {
+func (c *Client) getStreamKeyFromSongIDEx(songId int) (responses.StreamKey, error) {
 	var resp responses.GetStreamKeyFromSongIDEx
 
-	c.CallMethod("getStreamKeyFromSongIDEx", requests.GetStreamKeyFromSongIDEx{
+	err := c.CallMethod("getStreamKeyFromSongIDEx", requests.GetStreamKeyFromSongIDEx{
 		SongId:   songId,
 		Type:     0,
 		Prefetch: false,
@@ -52,7 +55,11 @@ func (c *Client) getStreamKeyFromSongIDEx(songId int) responses.StreamKey {
 		Country:  c.session.Country,
 	}, &resp)
 
-	return resp.Result
+	if err != nil {
+		return responses.StreamKey{}, err
+	}
+
+	return resp.Result, nil
 }
 
 func (c *Client) markSongDownloadedEx(sk *StreamKey) {
