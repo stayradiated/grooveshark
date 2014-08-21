@@ -2,7 +2,6 @@ package grooveshark
 
 import (
 	"fmt"
-	netUrl "net/url"
 
 	"github.com/stayradiated/grooveshark/session"
 )
@@ -26,9 +25,4 @@ func (c *Client) CallMethod(method string, parameters interface{}, resp interfac
 	request := session.NewRequest(c.session, method, parameters)
 	request.Sign()
 	request.Send(resp)
-}
-
-func (c *Client) DownloadTrack(ip, streamKey string) {
-	url := "/stream.php?streamKey=" + netUrl.QueryEscape(streamKey)
-	fmt.Println(url)
 }

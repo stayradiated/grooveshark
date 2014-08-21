@@ -16,6 +16,20 @@ type GetResultsFromSearch struct {
 	} `json:"result"`
 }
 
+type returnedResult struct {
+	Return bool `json:"Return"`
+}
+
+type MarkSongDownloadedEx struct {
+	Header Header         `json:"header"`
+	Result returnedResult `json:"result"`
+}
+
+type GetStreamKeyFromSongIDEx struct {
+	Header Header    `json:"header"`
+	Result StreamKey `json:"result"`
+}
+
 type TrackList []Track
 
 type Track struct {
@@ -39,4 +53,17 @@ type Track struct {
 	Score                  float64 `json:"Score"`
 	RawScore               int     `json:"RawScore"`
 	PopularityIndex        int     `json:"PopularityIndex"`
+}
+
+type StreamKey struct {
+	Expires        int    `json:"Expires"`
+	FileId         string `json:"FileID"`
+	FileToken      string `json:"FileToken"`
+	SongId         int    `json:"SongID"`
+	Ip             string `json:"ip"`
+	IsMobile       bool   `json:"isMobile"`
+	StreamKey      string `json:"streamKey"`
+	StreamServerId int    `json:"streamServerID"`
+	Timestamp      int    `json:"ts"`
+	USecs          string `json:"uSecs"`
 }
