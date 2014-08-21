@@ -31,10 +31,14 @@ func newStreamKey(ip, key string, songId int, client *Client) (streamKey *Stream
 	return streamKey
 }
 
+func (sk *StreamKey) Url() string {
+	return "http://" + sk.Ip + "/stream.php?streamKey=" + sk.StreamKey
+}
+
 func (sk *StreamKey) Download() (*http.Response, error) {
+	// must call markSongDownloadedEx before downloading song
 	sk.client.markSongDownloadedEx(sk)
-	url := "http://" + sk.Ip + "/stream.php?streamKey=" + sk.StreamKey
-	return http.Get(url)
+	return http.Get(sk.Url())
 }
 
 func (c *Client) getStreamKeyFromSongIDEx(songId int) responses.StreamKey {

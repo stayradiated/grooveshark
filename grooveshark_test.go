@@ -11,7 +11,7 @@ import (
 func TestNewClient(t *testing.T) {
 	client := NewClient()
 	client.Connect()
-	tracks := client.Search("Time After Time Cyndi Lauper", "Songs")
+	tracks := client.Search("99 Red Balloons Nena", "Songs")
 	track := tracks[0]
 
 	songId, _ := strconv.Atoi(track.SongId)
