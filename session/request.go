@@ -31,7 +31,7 @@ type Header struct {
 	Privacy        int              `json:"privacy"`
 	Client         string           `json:"client"`
 	ClientRevision string           `json:"clientRevision"`
-	Uuid           string           `json:"uuid"`
+	UUID           string           `json:"uuid"`
 	Country        *Country         `json:"country"`
 	SessionId      SessionId        `json:"session"`
 	Token          RequestSignature `json:"token,omitempty"`
@@ -56,7 +56,7 @@ func NewRequest(session *Session, method string, parameters interface{}) (reques
 			Privacy: 0,
 			Country: session.Country,
 
-			Uuid:      session.Uuid,
+			UUID:      session.UUID,
 			SessionId: session.SessionId,
 		},
 	}
@@ -112,9 +112,8 @@ func (r *Request) Send(resp interface{}) {
 		panic(err)
 	}
 
-	if r.Method == "markSongCompleted" {
-		fmt.Printf("%+v\n", res)
-		fmt.Println("Body: ", string(resBody))
+	if r.Method == "getResultsFromSearch" {
+		fmt.Println(string(resBody))
 	}
 
 	err = json.Unmarshal(resBody, &resp)

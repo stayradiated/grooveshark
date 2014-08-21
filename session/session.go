@@ -37,7 +37,7 @@ type Session struct {
 
 	Country *Country
 
-	Uuid      string
+	UUID      string
 	SessionId SessionId
 }
 
@@ -52,7 +52,7 @@ func NewSession(template *SessionTemplate) (session *Session) {
 		Salt:           template.Salt,
 		Client:         template.Client,
 		ClientRevision: template.ClientRevision,
-		Uuid:           id.String(),
+		UUID:           id.String(),
 	}
 
 	return session

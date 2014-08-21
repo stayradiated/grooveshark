@@ -30,3 +30,7 @@ type GetStreamKeyFromSongIDEx struct {
 type GetPlaylistByID struct {
 	PlaylistId string `json:"playlistID"`
 }
+
+type GetQueueSongListFromSongIDs struct {
+	SongIds []string `json:"songIDs"`
+}
