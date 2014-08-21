@@ -1,4 +1,4 @@
-package grooveshark
+package session
 
 import (
 	"encoding/json"
@@ -34,9 +34,11 @@ type Session struct {
 	Salt           string
 	Client         string
 	ClientRevision string
-	Uuid           string
-	SessionId      SessionId
-	Country        *Country
+
+	Country *Country
+
+	Uuid      string
+	SessionId SessionId
 }
 
 // NewSession creates a new session

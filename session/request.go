@@ -1,10 +1,12 @@
-package grooveshark
+package session
 
 import (
+	"bytes"
 	"crypto/rand"
 	"crypto/sha1"
 	"encoding/hex"
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -21,28 +23,45 @@ type Request struct {
 type Body struct {
 	Method     *string     `json:"method"`
 	Header     *Header     `json:"header"`
-	Parameters *Parameters `json:"parameters"`
+	Parameters interface{} `json:"parameters"`
 }
 
-type Parameters map[string]string
-
 type Header struct {
+	Privacy        int              `json:"privacy"`
 	Client         string           `json:"client"`
 	ClientRevision string           `json:"clientRevision"`
-	Token          RequestSignature `json:"token"`
-	Privacy        int              `json:"privacy"`
+	Uuid           string           `json:"uuid"`
 	Country        *Country         `json:"country"`
 	SessionId      SessionId        `json:"session"`
-	Uuid           string           `json:"uuid"`
+	Token          RequestSignature `json:"token,omitempty"`
 }
 
 // NewRequest creates a new request
-func NewRequest(session *Session, method string, parameters *Parameters) (request *Request) {
+func NewRequest(session *Session, method string, parameters interface{}) (request *Request) {
 	request = &Request{
 		Url:     "http://grooveshark.com/more.php?" + method,
 		Method:  method,
 		Session: session,
 	}
+
+	body := &Body{
+		Method:     &(*request).Method,
+		Parameters: parameters,
+
+		Header: &Header{
+			Client:         session.Client,
+			ClientRevision: session.ClientRevision,
+
+			Privacy: 0,
+			Country: session.Country,
+
+			Uuid:      session.Uuid,
+			SessionId: session.SessionId,
+		},
+	}
+
+	request.Body = body
+
 	return request
 }
 
@@ -61,8 +80,6 @@ func (r *Request) Sign() {
 		r.Method, string(token), r.Session.Salt, nonce,
 	}, ":")
 
-	fmt.Println(input)
-
 	// hash with sha1
 	hash := sha1.New()
 	hash.Write([]byte(input))
@@ -71,11 +88,31 @@ func (r *Request) Sign() {
 	signature := hex.EncodeToString(hash.Sum(nil))
 
 	// add to header
-	header := *(*r.Body).Header
-	header.Token = RequestSignature(signature)
+	header := (*r.Body).Header
+	(*header).Token = RequestSignature(nonce + signature)
 }
 
 // Send makes the request
-func (r *Request) Send() {
-	res, err := http.Post(r.Url, "application/json", &params)
+func (r *Request) Send(resp interface{}) {
+	data, err := json.Marshal(*r.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	body := bytes.NewReader(data)
+
+	res, err := http.Post(r.Url, "application/json", body)
+	if err != nil {
+		panic(err)
+	}
+
+	resBody, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	err = json.Unmarshal(resBody, &resp)
+	if err != nil {
+		panic(err)
+	}
 }

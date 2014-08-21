@@ -3,15 +3,17 @@ package grooveshark
 import (
 	"fmt"
 	netUrl "net/url"
+
+	"github.com/stayradiated/grooveshark/session"
 )
 
 type Client struct {
-	session *Session
+	session *session.Session
 }
 
 func NewClient() (client *Client) {
 	return &Client{
-		session: NewSession(HtmlSharkSession),
+		session: session.NewSession(session.HtmlSharkSession),
 	}
 }
 
@@ -20,10 +22,10 @@ func (c *Client) Connect() {
 	fmt.Println("We are online")
 }
 
-func (c *Client) CallMethod(method string, parameters *Parameters) {
-	request := NewRequest(c.session, method, parameters)
+func (c *Client) CallMethod(method string, parameters interface{}, resp interface{}) {
+	request := session.NewRequest(c.session, method, parameters)
 	request.Sign()
-	request.Send()
+	request.Send(resp)
 }
 
 func (c *Client) DownloadTrack(ip, streamKey string) {
