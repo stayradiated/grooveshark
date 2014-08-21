@@ -1,7 +1,6 @@
 package grooveshark
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -74,6 +73,4 @@ func (c *Client) markStreamKeyOver30Seconds(sk *StreamKey) {
 		StreamKey:      sk.StreamKey,
 		StreamServerId: sk.Ip,
 	}, &resp)
-
-	fmt.Println(resp)
 }

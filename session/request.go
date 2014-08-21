@@ -6,7 +6,6 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -110,10 +109,6 @@ func (r *Request) Send(resp interface{}) {
 	resBody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		panic(err)
-	}
-
-	if r.Method == "getResultsFromSearch" {
-		fmt.Println(string(resBody))
 	}
 
 	err = json.Unmarshal(resBody, &resp)

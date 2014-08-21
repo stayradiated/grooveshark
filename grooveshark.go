@@ -1,10 +1,6 @@
 package grooveshark
 
-import (
-	"fmt"
-
-	"github.com/stayradiated/grooveshark/session"
-)
+import "github.com/stayradiated/grooveshark/session"
 
 type Client struct {
 	session *session.Session
@@ -18,7 +14,6 @@ func NewClient() (client *Client) {
 
 func (c *Client) Connect() {
 	c.session.Initiate()
-	fmt.Println("We are online")
 }
 
 func (c *Client) CallMethod(method string, parameters interface{}, resp interface{}) {
