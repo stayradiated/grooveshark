@@ -1,6 +1,9 @@
 package responses
 
-import "strconv"
+import (
+	"strconv"
+	"time"
+)
 
 type Header struct {
 	Session         string `json:"session"`
@@ -92,7 +95,10 @@ func (s *SearchTrack) Track() (track Track) {
 	track.TrackNum, _ = strconv.Atoi(s.TrackNum)
 	track.ArtistId, _ = strconv.Atoi(s.ArtistId)
 
-	track.EstimateDuration, _ = strconv.ParseFloat(s.EstimateDuration, 64)
+	duration, _ := strconv.ParseFloat(s.EstimateDuration, 64)
+	if duration != 4096 {
+		track.EstimateDuration = time.Duration(duration) * time.Second
+	}
 
 	track.IsVerified, _ = strconv.ParseBool(s.IsVerified)
 	track.IsLowBitrateAvailable, _ = strconv.ParseBool(s.IsLowBitrateAvailable)
@@ -180,7 +186,10 @@ func (p *PlaylistTrack) Track() (track Track) {
 	track.ArtistId, _ = strconv.Atoi(p.ArtistId)
 	track.Popularity, _ = strconv.Atoi(p.Popularity)
 
-	track.EstimateDuration, _ = strconv.ParseFloat(p.EstimateDuration, 64)
+	duration, _ := strconv.ParseFloat(p.EstimateDuration, 64)
+	if duration != 4096 {
+		track.EstimateDuration = time.Duration(duration) * time.Second
+	}
 
 	track.IsVerified, _ = strconv.ParseBool(p.IsVerified)
 	track.IsLowBitrateAvailable, _ = strconv.ParseBool(p.IsLowBitrateAvailable)
@@ -197,7 +206,7 @@ type Track struct {
 	AlbumName             string
 	Year                  int
 	CoverArtFilename      string
-	EstimateDuration      float64
+	EstimateDuration      time.Duration
 	Flags                 int
 	TrackNum              int
 	Popularity            int

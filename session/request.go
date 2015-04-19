@@ -102,7 +102,24 @@ func (r *Request) Send(resp interface{}) error {
 
 	body := bytes.NewReader(data)
 
-	res, err := http.Post(r.Url, "application/json", body)
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", r.Url, body)
+
+	req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
+	req.Header.Set("Origin", "http://grooveshark.com")
+	req.Header.Set("X-Requested-With", "XMLHttpRequest")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36")
+	req.Header.Set("Content-Type", "text/plain")
+	req.Header.Set("Referer", "http://grooveshark.com/")
+	// req.Header.Set("Accept-Encoding", "gzip, deflate")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.8")
+	req.Header.Set("Cookie", "ismobile=no")
+
+	if err != nil {
+		return err
+	}
+
+	res, err := client.Do(req)
 	if err != nil {
 		return err
 	}

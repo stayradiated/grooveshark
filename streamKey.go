@@ -51,7 +51,6 @@ func (c *Client) getStreamKeyFromSongIDEx(songId int) (responses.StreamKey, erro
 		Type:     0,
 		Prefetch: false,
 		Mobile:   false,
-		ReturnTS: false,
 		Country:  c.session.Country,
 	}, &resp)
 

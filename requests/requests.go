@@ -23,7 +23,6 @@ type GetStreamKeyFromSongIDEx struct {
 	Type     int              `json:"type"`
 	Prefetch bool             `json:"prefetch"`
 	Mobile   bool             `json:"mobile"`
-	ReturnTS bool             `json:"returnTS"`
 	Country  *session.Country `json:"country"`
 }
 

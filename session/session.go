@@ -83,17 +83,13 @@ type preloadData struct {
 }
 
 type Country struct {
-	Id     int    `json:"ID"`
-	CC1    int    `json:"CC1"`
-	CC2    int    `json:"CC2"`
-	CC3    int    `json:"CC3"`
-	CC4    int    `json:"CC4"`
-	DMA    int    `json:"DMA"`
-	Iso    string `json:"iso"`
-	Region string `json:"region"`
-	City   string `json:"city"`
-	Zip    string `json:"zip"`
-	IPR    int    `json:"IPR"`
+	Id  int `json:"ID"`
+	CC1 int `json:"CC1"`
+	CC2 int `json:"CC2"`
+	CC3 int `json:"CC3"`
+	CC4 int `json:"CC4"`
+	DMA int `json:"DMA"`
+	IPR int `json:"IPR"`
 }
 
 func (s *Session) updateToken() {
