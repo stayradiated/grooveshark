@@ -62,7 +62,7 @@ import (
 func TestSearch(t *testing.T) {
 	client := NewClient()
 	client.Connect()
-	tracks := client.Search("topgear")
+	tracks := client.Search("Seven Nation Army")
 	output, _ := json.Marshal(tracks)
 	fmt.Println(string(output))
 }

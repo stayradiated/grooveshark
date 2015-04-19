@@ -95,9 +95,9 @@ func (s *SearchTrack) Track() (track Track) {
 	track.TrackNum, _ = strconv.Atoi(s.TrackNum)
 	track.ArtistId, _ = strconv.Atoi(s.ArtistId)
 
-	duration, _ := strconv.ParseFloat(s.EstimateDuration, 64)
-	if duration != 4096 {
-		track.EstimateDuration = time.Duration(duration) * time.Second
+	estimateDuration, _ := strconv.ParseFloat(s.EstimateDuration, 64)
+	if estimateDuration != 4096 {
+		track.EstimateDuration = time.Duration(int64(estimateDuration)) * time.Second
 	}
 
 	track.IsVerified, _ = strconv.ParseBool(s.IsVerified)
@@ -186,9 +186,9 @@ func (p *PlaylistTrack) Track() (track Track) {
 	track.ArtistId, _ = strconv.Atoi(p.ArtistId)
 	track.Popularity, _ = strconv.Atoi(p.Popularity)
 
-	duration, _ := strconv.ParseFloat(p.EstimateDuration, 64)
-	if duration != 4096 {
-		track.EstimateDuration = time.Duration(duration) * time.Second
+	estimateDuration, _ := strconv.ParseFloat(p.EstimateDuration, 64)
+	if estimateDuration != 4096 {
+		track.EstimateDuration = time.Duration(int64(estimateDuration)) * time.Second
 	}
 
 	track.IsVerified, _ = strconv.ParseBool(p.IsVerified)
