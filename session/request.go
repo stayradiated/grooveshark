@@ -6,7 +6,6 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -131,8 +130,6 @@ func (r *Request) Send(resp interface{}) error {
 
 	err = json.Unmarshal(resBody, &resp)
 	if err != nil {
-		fmt.Printf("%+v\n", res)
-		fmt.Println(string(resBody))
 		return err
 	}
 

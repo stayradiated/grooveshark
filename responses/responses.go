@@ -89,11 +89,14 @@ func (s *SearchTrack) Track() (track Track) {
 		CoverArtFilename: s.CoverArtFilename,
 	}
 
-	track.Year, _ = strconv.Atoi(s.Year)
 	track.SongId, _ = strconv.Atoi(s.SongId)
 	track.AlbumId, _ = strconv.Atoi(s.AlbumId)
 	track.TrackNum, _ = strconv.Atoi(s.TrackNum)
 	track.ArtistId, _ = strconv.Atoi(s.ArtistId)
+
+	if s.Year != "1901" {
+		track.Year, _ = strconv.Atoi(s.Year)
+	}
 
 	estimateDuration, _ := strconv.ParseFloat(s.EstimateDuration, 64)
 	if estimateDuration != 4096 {
@@ -178,13 +181,16 @@ func (p *PlaylistTrack) Track() (track Track) {
 		CoverArtFilename: p.CoverArtFilename,
 	}
 
-	track.Year, _ = strconv.Atoi(p.Year)
 	track.Flags, _ = strconv.Atoi(p.Flags)
 	track.SongId, _ = strconv.Atoi(p.SongId)
 	track.AlbumId, _ = strconv.Atoi(p.AlbumId)
 	track.TrackNum, _ = strconv.Atoi(p.TrackNum)
 	track.ArtistId, _ = strconv.Atoi(p.ArtistId)
 	track.Popularity, _ = strconv.Atoi(p.Popularity)
+
+	if p.Year != "1901" {
+		track.Year, _ = strconv.Atoi(p.Year)
+	}
 
 	estimateDuration, _ := strconv.ParseFloat(p.EstimateDuration, 64)
 	if estimateDuration != 4096 {
